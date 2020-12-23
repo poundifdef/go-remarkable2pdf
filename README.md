@@ -14,10 +14,15 @@ import (
 )
 
 func main() {
+    // Render a single .rm lines file as PDF
 	input, _ := os.Open("4.rm")
 	output, _ := os.Create("out.pdf")
 	rm2pdf.RenderRmFile(input, output)
 	output.Close()
+
+    // Render a full Notebook file as PDF
+	output, _ := os.Create("out.pdf")
+	rm2pdf.RenderRmNotebook("Notebook.zip", output)
 }
 
 ```

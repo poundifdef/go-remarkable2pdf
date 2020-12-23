@@ -54,6 +54,7 @@ func RenderRmNotebook(input string, output io.Writer) error {
 	pdf := gofpdf.New("P", "in", "letter", "")
 
 	for _, file := range reader.File {
+		// TODO: make sure we're rendering these in order
 		if strings.HasSuffix(file.Name, ".rm") {
 			fd, err := file.Open()
 			if err != nil {
