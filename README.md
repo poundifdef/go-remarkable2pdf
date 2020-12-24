@@ -40,6 +40,7 @@ func main() {
 
 ## Not Currently Supported
 
+- [ ] Background templates (grid, lines, etc)
 - [ ] PDF annotations
 - [ ] ePUB
 - [ ] Layer naming and visibility
