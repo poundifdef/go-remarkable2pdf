@@ -46,12 +46,12 @@ func main() {
 
 **Remarkable Desktop:**
 
-![Remarkable Desktop](static/remarkable-desktop.png | width=100)
+![](/static/remarkable-desktop.png)
 
 **go-remarkable2pdf**
 
-![go-remarkable2pdf](static/go-remarkable2pdf.png | width=100)
+![](/static/go-remarkable2pdf.png)
 
 **Original**
 
-![Original](static/original.jpg | width=100)
+![](/static/original.jpg)
