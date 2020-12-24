@@ -37,6 +37,9 @@ func main() {
 - [x] Multiple pages
 - [x] .rm lines file
 - [x] Notebook .zip file
+
+## Not Currently Supported
+
 - [ ] PDF annotations
 - [ ] ePUB
 - [ ] Layer naming and visibility
