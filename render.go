@@ -8,6 +8,7 @@ import (
 )
 
 func renderLinesFile(pdf *gofpdf.Fpdf, rm *models.Rm) error {
+	//fmt.Println(rm)
 
 	xpmax := float32(8.5)
 	ypmax := float32(11)
@@ -22,6 +23,7 @@ func renderLinesFile(pdf *gofpdf.Fpdf, rm *models.Rm) error {
 	for i, layer := range rm.Layers {
 		// TODO: Use metadata to use correct layer names
 		// TODO: Can we support layer visibility?
+
 		layerName := fmt.Sprintf("Layer %d", i+1)
 		pdfLayer := pdf.AddLayer(layerName, true)
 
@@ -44,27 +46,13 @@ func renderLinesFile(pdf *gofpdf.Fpdf, rm *models.Rm) error {
 				pdf.SetDrawColor(255, 255, 255)
 			}
 
-			// Change line thickness
-			// TODO: Perhaps the line width should be proportional
-			// 		 to the actual value of this enum
-			switch line.BrushSize {
-			case models.Large:
-				pdf.SetLineWidth(0.03)
-			case models.Medium:
-				pdf.SetLineWidth(0.02)
-			case models.Small:
-				pdf.SetLineWidth(0.01)
-			}
-
 			// Special logic for different brush types
 			switch line.BrushType {
 			case models.Eraser:
-				// TODO: pay attention to line thickness here
 				pdf.SetDrawColor(255, 255, 255)
 			case models.HighlighterV5:
 				// Highlight the text in transparent yellow
-				pdf.SetLineWidth(0.1)
-				pdf.SetDrawColor(255, 255, 0)
+				pdf.SetDrawColor(250, 250, 0)
 				pdf.SetAlpha(0.2, "Normal")
 			default:
 				pdf.SetAlpha(1, "Normal")
@@ -74,18 +62,25 @@ func renderLinesFile(pdf *gofpdf.Fpdf, rm *models.Rm) error {
 			pdf.SetLineCapStyle("round")
 			pdf.SetLineJoinStyle("round")
 
-			// Use FPDF's functionality to draw a line between
-			// consecutive points
-			for k, point := range line.Points {
-				xpdf := float64((xpmax) * (point.X / xrmax))
-				ypdf := float64((ypmax) * (point.Y / yrmax))
-				if k == 0 {
-					pdf.MoveTo(xpdf, ypdf)
-				} else {
-					pdf.LineTo(xpdf, ypdf)
+			for k, _ := range line.Points {
+				if k > 0 {
+					// The smallest possible line (fineliner thin) has a Width
+					// value of 2. Arbitrarily set that to 0.01" as the baseline.
+					// Then, scale any segment's thickness to be relative to that.
+
+					lineWidth := 0.01 * line.Points[k].Width / 2.0
+					pdf.SetLineWidth(float64(lineWidth))
+
+					x1 := float64((xpmax) * (line.Points[k-1].X / xrmax))
+					y1 := float64((ypmax) * (line.Points[k-1].Y / yrmax))
+
+					x2 := float64((xpmax) * (line.Points[k].X / xrmax))
+					y2 := float64((ypmax) * (line.Points[k].Y / yrmax))
+
+					pdf.Line(x1, y1, x2, y2)
+
 				}
 			}
-			pdf.DrawPath("D")
 		}
 
 		pdf.EndLayer()
