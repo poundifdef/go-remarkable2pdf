@@ -48,10 +48,6 @@ func main() {
 
 ## Example Output
 
-**Remarkable Desktop:**
-
-![](/static/remarkable-desktop.png)
-
 **go-remarkable2pdf**
 
 ![](/static/go-remarkable2pdf.png)
